@@ -1,0 +1,11 @@
+{
+    "editor.codeActionsOnSave": {
+         "source.organizeImports": "always",
+         "source.fixAll.eslint": "always"
+    },
+    "eslint.alwaysShowStatus": true,
+    "eslint.codeActionsOnSave.mode": "problems",
+    "eslint.experimental.useFlatConfig": true,
+    "eslint.format.enable": true,
+    "notebook.codeActionsOnSave": {}
+}
