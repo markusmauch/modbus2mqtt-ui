@@ -1,7 +1,7 @@
+import { Input, Text } from "@chakra-ui/react";
 import React from "react";
-import { Proxy } from "../Proxy";
 import { Model } from "../Model";
-import { Heading, Input, Text } from "@chakra-ui/react";
+import { Proxy } from "../Proxy";
 
 export default () => 
 {
@@ -13,7 +13,6 @@ export default () =>
     }, [] );
 
     return (<>
-        <Heading size="2x1">MQTT Settings</Heading>
         <Text mb='8px'>MQTT host address:</Text>
         <Input placeholder='mqtt://localhost:1883' value={mqttSettings?.host}></Input>
         <Text mb='8px'>Username:</Text>

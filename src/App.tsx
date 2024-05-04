@@ -1,9 +1,9 @@
-import { Box, Button, Center, Divider, Grid, GridItem, Heading, Image, Stack, VStack } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import DeviceList from "./Components/DeviceList";
-import Logo from "./Images/Logo.jpg";
+import Breadcrumbs from "./Components/Breadcrumbs";
+import SideBar from "./Components/SideBar";
 import { Model } from "./Model";
 import { Proxy } from "./Proxy";
 
@@ -17,33 +17,14 @@ function App()
     }, [] );
 
     return (
-        <Grid templateColumns="250px auto" templateRows="100px auto" gap="5px" h="100%">
-            <GridItem w='100%' h='100%' backgroundColor="#E7F2F8" colSpan={2}>
-                <Stack direction="row">
-                    <Image src={Logo} boxSize="100px"></Image>
-                    <Center>
-                        <Heading size="lg">Modbus2MQTT</Heading>
-                    </Center>
-                </Stack>
+        <Grid templateRows="auto 1fr" templateColumns="280px auto" gap={1} h="100%" p={1}>
+            <GridItem backgroundColor="#E7F2F8" rowSpan={2}>
+                <SideBar />
             </GridItem>
-            <GridItem w='100%' h='100%' backgroundColor="#E7F2F8">
-                <DeviceList></DeviceList>
-                <Box position='relative' padding='10'>
-                    <Divider color="gray" />
-                </Box>
-                <VStack>
-                    <Button w={200} colorScheme='teal' size='xs' onClick={event=>Proxy.service("start")}>
-                        Start Service
-                    </Button>
-                    <Button w={200} colorScheme='teal' size='xs' onClick={event=>Proxy.service("stop")}>
-                        Stop Service
-                    </Button>
-                    <Button w={200} colorScheme='teal' size='xs'>
-                        <a href={"/mqttsettings"}>MQTT Settings</a>
-                    </Button>
-                </VStack>
+            <GridItem backgroundColor="#E7F2F8" p={2}>
+                <Breadcrumbs />
             </GridItem>
-            <GridItem>
+            <GridItem backgroundColor="#E7F2F8" p={4} overflow="auto">
                 <Outlet />
             </GridItem>
         </Grid>

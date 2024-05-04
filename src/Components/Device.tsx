@@ -1,19 +1,24 @@
-import { Heading, Input, Text } from "@chakra-ui/react";
-import { LoaderFunction, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import { Box, Input, Text } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { ActionFunction, ActionFunctionArgs, LoaderFunction, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { Model } from "../Model";
 import { Proxy } from "../Proxy";
 import ComponentList from "./ComponentList";
+import FormControls from "./FormControls";
 
 interface Props
 {
 }
 
-interface Params extends LoaderFunctionArgs
+interface LoaderParams extends LoaderFunctionArgs
 {
     id: string;
 }
 
-export const deviceLoader: LoaderFunction<Params> = async ( { params } ) =>
+interface ActionParams extends ActionFunctionArgs
+{}
+
+export const loader: LoaderFunction<LoaderParams> = async ( { params } ) =>
 {
     const deviceId = params.deviceId as string;
     const device = await Proxy.getDevice(deviceId);
@@ -21,17 +26,43 @@ export const deviceLoader: LoaderFunction<Params> = async ( { params } ) =>
 };
 
 
+export const action: ActionFunction<ActionParams> = async ( { params } ) =>
+{
+    alert("pups")
+};
+
 export default (props: Props) =>
 {
-    const device = useLoaderData() as Model.Device;;
+
+    const device = useLoaderData() as Model.Device;
+    
+    const {
+        handleSubmit,
+        register,
+        formState: { errors, isSubmitting },
+      } = useForm();
+
+    // const onSubmit = (values) =>
+    // {
+    //     return new Promise((resolve) => {
+    //       setTimeout(() => {
+    //         alert(JSON.stringify(values, null, 2))
+    //         resolve()
+    //       }, 3000)
+    //     })
+    //   }
+    
     return ( 
-        <>
-            <Heading size="2x1">Device '{device.name}'</Heading>
-            <Text mb='8px'>Name:</Text>
-            <Input placeholder="" value={device.name}></Input>
-            <Text mb='8px'>Id:</Text>
-            <Input placeholder='' value={device.unique_id}></Input>
-            <ComponentList deviceId={device.unique_id}></ComponentList>
-        </>
+        <form method="post" action={`/device/${device.unique_id}/edit`}>
+            <Box>
+                <Text mb='8px'>Name:</Text>
+                <Input placeholder="" value={device.name}></Input>
+                <Text mb='8px'>Id:</Text>
+                <Input placeholder='' value={device.unique_id}></Input>
+                <Text mb='8px'>Components:</Text>
+                <ComponentList deviceId={device.unique_id}></ComponentList>
+                <FormControls cancelLink="/devices"></FormControls>
+            </Box>
+        </form>
     );
 };

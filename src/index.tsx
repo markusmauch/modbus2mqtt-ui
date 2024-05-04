@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Component, { componentLoader } from "./Components/Component";
-import Device, { deviceLoader } from "./Components/Device";
+import Device, { action as deviceAction, loader as deviceLoader } from "./Components/Device";
+import DeviceList from "./Components/DeviceList";
 import MqttSettings from "./Components/MqttSettings";
 import "./index.css";
 
@@ -13,17 +14,31 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             {
-                path: "device/:deviceId",
+                path: "/",
+                element: <DeviceList />,
+            },
+            {
+                path: "/devices",
+                element: <DeviceList />,
+            },
+            {
+                path: "/device/:deviceId",
                 element: <Device />,
                 loader: deviceLoader,
             },
             {
-                path: "device/:deviceId/component/:componentId",
+                path: "/device/:deviceId/edit",
+                element: <Device />,
+                loader: deviceLoader,
+                action: deviceAction
+            },
+            {
+                path: "/device/:deviceId/component/:componentId",
                 element: <Component />,
                 loader: componentLoader,
             },
             {
-                path: "mqttsettings",
+                path: "/mqttsettings",
                 element: <MqttSettings />,
             },
         ]
