@@ -42,16 +42,12 @@ export default (props: Props) =>
         formState: { errors, isSubmitting },
       } = useForm();
 
-    // const onSubmit = (values) =>
-    // {
-    //     return new Promise((resolve) => {
-    //       setTimeout(() => {
-    //         alert(JSON.stringify(values, null, 2))
-    //         resolve()
-    //       }, 3000)
-    //     })
-    //   }
-    
+    const onSubmit = (event: any) =>
+    {
+        event.preventDefault();
+        return Promise.resolve();
+      }
+
     return ( 
         <form method="post" action={`/device/${device.unique_id}/edit`}>
             <Box>
