@@ -1,8 +1,9 @@
-import { Box, Button, Divider, Grid, GridItem, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Divider, Grid, GridItem, Heading, Image, Stack, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import DeviceList from "./Components/DeviceList";
+import Logo from "./Images/Logo.jpg";
 import { Model } from "./Model";
 import { Proxy } from "./Proxy";
 
@@ -16,9 +17,16 @@ function App()
     }, [] );
 
     return (
-        <Grid templateColumns="250px auto" templateRows="80px auto" gap="5px" h="100%">
-            <GridItem w='100%' h='100%' backgroundColor="lightgrey" colSpan={2}>Modbus2MQTT</GridItem>
-            <GridItem w='100%' h='100%' backgroundColor="lightgrey">
+        <Grid templateColumns="250px auto" templateRows="100px auto" gap="5px" h="100%">
+            <GridItem w='100%' h='100%' backgroundColor="#E7F2F8" colSpan={2}>
+                <Stack direction="row">
+                    <Image src={Logo} boxSize="100px"></Image>
+                    <Center>
+                        <Heading size="lg">Modbus2MQTT</Heading>
+                    </Center>
+                </Stack>
+            </GridItem>
+            <GridItem w='100%' h='100%' backgroundColor="#E7F2F8">
                 <DeviceList></DeviceList>
                 <Box position='relative' padding='10'>
                     <Divider color="gray" />
