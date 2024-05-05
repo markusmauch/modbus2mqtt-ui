@@ -1,64 +1,49 @@
-import { Box, Input, Text } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { ActionFunction, ActionFunctionArgs, LoaderFunction, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import { Box, FormControl, FormHelperText, FormLabel, Input } from "@chakra-ui/react";
+import { useState } from "react";
+import { ActionFunction, Form, LoaderFunction, useLoaderData } from "react-router-dom";
 import { Model } from "../Model";
 import { Proxy } from "../Proxy";
-import ComponentList from "./ComponentList";
 import FormControls from "./FormControls";
 
 interface Props
 {
 }
 
-interface LoaderParams extends LoaderFunctionArgs
-{
-    id: string;
-}
-
-interface ActionParams extends ActionFunctionArgs
-{}
-
-export const loader: LoaderFunction<LoaderParams> = async ( { params } ) =>
+export const loader: LoaderFunction<Model.Device> = async ( { params } ) =>
 {
     const deviceId = params.deviceId as string;
     const device = await Proxy.getDevice(deviceId);
     return device;
 };
 
-
-export const action: ActionFunction<ActionParams> = async ( { params } ) =>
+export const action: ActionFunction<Model.Device> = async ( { request, params } ) =>
 {
-    alert("pups")
+    const deviceId = params.deviceId as string;
+    const formData = await request.formData();
+    alert(formData.get("name"));
+    const device = await Proxy.getDevice(deviceId);
+    device.name = "TEST";
+    return device;
 };
 
 export default (props: Props) =>
 {
-
     const device = useLoaderData() as Model.Device;
-    
-    const {
-        handleSubmit,
-        register,
-        formState: { errors, isSubmitting },
-      } = useForm();
 
-    const onSubmit = (event: any) =>
-    {
-        event.preventDefault();
-        return Promise.resolve();
-      }
+    const [name, setName] = useState(device.name);
 
     return ( 
-        <form method="post" action={`/device/${device.unique_id}/edit`}>
+        <Form method="POST" action={`/device/${device.unique_id}/edit`}>
             <Box>
-                <Text mb='8px'>Name:</Text>
-                <Input placeholder="" value={device.name}></Input>
-                <Text mb='8px'>Id:</Text>
-                <Input placeholder='' value={device.unique_id}></Input>
-                <Text mb='8px'>Components:</Text>
-                <ComponentList deviceId={device.unique_id}></ComponentList>
+                <FormControl>
+                    <FormLabel>Device Name</FormLabel>
+                    <Input name="name" type="text" value={name} onChange={event=>setName(event.target.value)} />
+                    <FormHelperText></FormHelperText>
+                </FormControl>
+                
+                <input type="hidden" name="unique_id" value={device.unique_id} />
                 <FormControls cancelLink="/devices"></FormControls>
             </Box>
-        </form>
+        </Form>
     );
 };
